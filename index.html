@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De la commande à la livraison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Fiche d'exercices en thème clair : blocs = séances, cartes dépliables, corrections masquables */
+:root {
+  --bg:        #f4f6f9;
+  --surface:   #ffffff;
+  --card:      #ffffff;
+  --border:    #dfe3ea;
+  --border-hi: #b9c0ce;
+  --text:      #1d2230;
+  --text-dim:  #5c6476;
+  --accent:    #b97d00;
+  --accent-bg: #fff6df;
+  --green:     #1b8047;
+  --green-bg:  #ecf7f0;
+  --green-bd:  #c9e6d4;
+  --green-dk:  #12552f;
+  --red:       #c23b3b;
+  --blue:      #2d69ad;
+  --blue-bg:   #edf3fb;
+  --purple:    #6f45ad;
+  --font-head: 'Syne', 'Trebuchet MS', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius:    10px;
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+.site-header {
+  background: linear-gradient(135deg, #ffffff 0%, #eef2f8 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 44px 20px 32px;
+  text-align: center;
+}
+.site-header .kicker {
+  display: inline-block;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 3px;
+  margin-bottom: 18px;
+}
+.site-header h1 {
+  font-family: var(--font-head);
+  font-size: clamp(24px, 6vw, 38px);
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.site-header .sub {
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 400;
+  max-width: 540px;
+  margin: 0 auto 20px;
+}
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 auto 22px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+
+/* ── NAV ANCRES ──────────────────────────────────────────── */
+.nav-anchors {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.nav-anchors a {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  text-decoration: none;
+  transition: border-color .15s, color .15s;
+}
+.nav-anchors a:hover, .nav-anchors a:focus-visible { border-color: var(--accent); color: var(--accent); }
+
+/* ── CONTENEUR PRINCIPAL ─────────────────────────────────── */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 36px 18px 80px;
+}
+
+/* ── TITRE DE BLOC ───────────────────────────────────────── */
+.bloc-titre {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 52px 0 6px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.bloc-titre:first-child { margin-top: 0; }
+.bloc-titre .icone { font-size: 26px; flex-shrink: 0; }
+.bloc-titre h2 {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.bloc-titre h2 small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+/* ── MÉMO ────────────────────────────────────────────────── */
+.memo {
+  background: var(--green-bg);
+  border: 1px solid var(--green-bd);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 16px 0 24px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.memo .memo-titre {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.memo code {
+  display: block;
+  background: #ffffff;
+  border: 1px solid var(--green-bd);
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: var(--green-dk);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13.5px;
+  margin: 5px 0;
+}
+.memo .note { color: var(--text-dim); font-size: 13px; margin-top: 8px; }
+
+/* ── CARTE EXERCICE ──────────────────────────────────────── */
+.exo-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.exo-card:hover { border-color: var(--border-hi); }
+
+.exo-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+.exo-header::-webkit-details-marker { display: none; }
+.exo-header:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.exo-num {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  min-width: 40px;
+}
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.badge-1 { background: #e9f6ee; color: var(--green); border: 1px solid #bfe2cc; }
+.badge-2 { background: var(--accent-bg); color: #8a5d00; border: 1px solid #efd798; }
+.badge-3 { background: #fbeaea; color: var(--red); border: 1px solid #efc4c4; }
+.badge-exam { background: #f2ecfa; color: var(--purple); border: 1px solid #d9c9ef; }
+
+.exo-titre-txt {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.chevron { color: var(--text-dim); font-size: 13px; flex-shrink: 0; transition: transform .2s; }
+details[open] .chevron { transform: rotate(180deg); }
+
+/* ── CORPS DE L'EXERCICE ─────────────────────────────────── */
+.exo-body { padding: 0 16px 20px; border-top: 1px solid var(--border); }
+
+.contexte {
+  background: var(--blue-bg);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.contexte strong { color: var(--text); }
+
+.table-wrap { overflow-x: auto; margin: 12px 0; }
+.tableau-donnees {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--surface);
+}
+.tableau-donnees th {
+  background: #eef1f6;
+  color: var(--text-dim);
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.tableau-donnees td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+.tableau-donnees tr:last-child td { border-bottom: none; }
+.tableau-donnees td.num { font-weight: 700; color: var(--text); white-space: nowrap; }
+
+.questions { margin: 18px 0 0; }
+.question { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+.question .q-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 11px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+.question p { font-size: 14px; margin: 0; min-width: 0; }
+
+/* ── COUP DE POUCE ───────────────────────────────────────── */
+.ordre-grandeur {
+  background: var(--accent-bg);
+  border: 1px solid #efd798;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #6e4b00;
+  margin: 12px 0 0;
+}
+.ordre-grandeur::before { content: "💡 "; }
+
+/* ── BOUTON CORRECTION ───────────────────────────────────── */
+.btn-corrige {
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: 6px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  margin-top: 18px;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-corrige:hover, .btn-corrige:focus-visible { border-color: var(--green); color: var(--green); }
+
+/* ── CORRECTION ──────────────────────────────────────────── */
+.correction {
+  display: none;
+  background: var(--green-bg);
+  border: 1px solid var(--green-bd);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.correction.visible { display: block; }
+.correction .corr-etape {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--green-bd);
+}
+.correction .corr-etape:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.correction .c-num {
+  display: inline-block;
+  background: var(--green);
+  color: #ffffff;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 18px;
+  margin-right: 6px;
+}
+.correction code {
+  display: block;
+  background: #ffffff;
+  border: 1px solid var(--green-bd);
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: var(--green-dk);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  margin: 5px 0;
+}
+.correction .res { font-family: var(--font-head); font-weight: 700; color: var(--text); }
+.correction .conclu { margin-top: 8px; font-size: 13.5px; color: #2c6244; font-style: italic; }
+.correction .tableau-corr { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; background: #ffffff; }
+.correction .tableau-corr th {
+  background: #dff0e6;
+  color: var(--green-dk);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  text-align: left;
+}
+.correction .tableau-corr td { padding: 6px 10px; border-bottom: 1px solid var(--green-bd); color: #24402f; vertical-align: top; }
+.correction .tableau-corr td.val { font-weight: 700; color: var(--green); }
+
+/* ── SÉPARATEUR ──────────────────────────────────────────── */
+hr.section-sep { border: none; border-top: 1px solid var(--border); margin: 54px 0 0; }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  background: var(--surface);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .exo-titre-txt { font-size: 13.5px; }
+  .contexte { font-size: 13.5px; }
+  .tableau-donnees { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="kicker">🧁 Gestion appliquée – CAP pâtissier</div>
+  <h1>De la commande<br>à la livraison</h1>
+  <p class="sub">Chapitre 9. 18 exercices en 5 séances, avec la boulangerie-pâtisserie Au Pain Doré. Ouvre un exercice, réponds sur ton cahier ou dans ton manuel, puis vérifie avec la correction.</p>
+  <div class="legende">
+    <span class="badge badge-1">⬆ décollage</span> je découvre
+    <span class="badge badge-2">◆ intermédiaire</span> j'applique
+    <span class="badge badge-exam">★ examen</span> je m'entraîne
+  </div>
+  <nav class="nav-anchors">
+    <a href="#commande">1 · Le rôle de la commande</a>
+    <a href="#bon-commande">2 · Lire un bon de commande</a>
+    <a href="#rediger">3 · Préparer une commande</a>
+    <a href="#livraison">4 · Contrôler la livraison</a>
+    <a href="#examen">5 · Sujets type examen</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOC 1 – LE RÔLE DE LA COMMANDE (séance 1)
+══════════════════════════════════════════════════════════ -->
+<div class="bloc-titre" id="commande">
+  <span class="icone">🤝</span>
+  <h2><small>Séance 1 · 1 h</small>Bloc 1 – La commande, un vrai contrat</h2>
+</div>
+
+<div class="memo">
+  <div class="memo-titre">🗂 mémo</div>
+  <code>Commande = contrat de vente conclu entre un client et un fournisseur.</code>
+  <code>Le client règle la somme convenue.</code>
+  <code>Le fournisseur livre les produits commandés, respecte les délais convenus et les règles d'hygiène et de sécurité.</code>
+  <code>Par téléphone : simple et rapide, mais pas de preuve en cas de litige. Par écrit : preuve recevable devant les tribunaux, mais moins rapide.</code>
+  <p class="note">Manuel p. 61 : encadré « bon à savoir », partie 1 et document 1.</p>
+</div>
+
+<!-- EX 1 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 1</span>
+    <span class="badge badge-1">⬆ décollage</span>
+    <span class="exo-titre-txt">Qui doit faire quoi ? (exercice 1 du manuel)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      La boulangerie-pâtisserie <strong>Au Pain Doré</strong> achète ses fruits chez <strong>Centre Primeurs</strong>, un grossiste de Rungis. Sarah, la cheffe pâtissière, explique à Noah, l'apprenti : « quand on commande, chacun a des obligations. »
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Dans ton manuel p. 61, relie chaque obligation à son destinataire : le client ou le fournisseur.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Ici, qui est le client ? Qui est le fournisseur ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> une seule obligation est pour le client. Celui qui paie, c'est lui.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span>
+        <table class="tableau-corr">
+          <tr><th>Obligation</th><th>Destinataire</th></tr>
+          <tr><td>Respecter les délais de livraison convenus</td><td class="val">Fournisseur</td></tr>
+          <tr><td>Régler la somme convenue</td><td class="val">Client</td></tr>
+          <tr><td>Respecter les règles d'hygiène et de sécurité</td><td class="val">Fournisseur</td></tr>
+          <tr><td>Livrer les produits commandés</td><td class="val">Fournisseur</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <p class="res">Client : Au Pain Doré. Fournisseur : Centre Primeurs.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 2 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 2</span>
+    <span class="badge badge-1">⬆ décollage</span>
+    <span class="exo-titre-txt">Client ou fournisseur ? Ça dépend !</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Trois situations chez <strong>Au Pain Doré</strong> :<br>
+      A. Au Pain Doré commande 3 kg de citrons à Centre Primeurs.<br>
+      B. Le restaurant « Le Bistrot du Canal » commande 30 tartes au citron à Au Pain Doré.<br>
+      C. Mme Lopez commande une pièce montée pour le mariage de sa fille.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Pour chaque situation, indique le client et le fournisseur.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Que remarques-tu pour Au Pain Doré ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> le client achète, le fournisseur vend et livre.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span>
+        <table class="tableau-corr">
+          <tr><th>Situation</th><th>Client</th><th>Fournisseur</th></tr>
+          <tr><td>A</td><td class="val">Au Pain Doré</td><td>Centre Primeurs</td></tr>
+          <tr><td>B</td><td class="val">Le Bistrot du Canal</td><td>Au Pain Doré</td></tr>
+          <tr><td>C</td><td class="val">Mme Lopez</td><td>Au Pain Doré</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <p class="res">Au Pain Doré est tantôt client (quand il achète ses matières premières), tantôt fournisseur (quand il vend ses pâtisseries).</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 3 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 3</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Téléphone ou écrit ? (document 1, exercice 2)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Noah doit commander des fruits pour les tartes du week-end. Il hésite : appeler Centre Primeurs ou envoyer un bon de commande ?
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Lis le document 1 (manuel p. 61).</p></div>
+      <div class="question"><span class="q-num">2</span><p>Complète le tableau de l'exercice 2 (manuel p. 62) : avantages et inconvénients de chaque moyen.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Donne un conseil à Noah s'il commande par téléphone.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> pense à ce qui se passe si le fournisseur se trompe et dit « ce n'est pas ce que vous avez commandé ».</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <table class="tableau-corr">
+          <tr><th>Moyen</th><th>Avantages</th><th>Inconvénients</th></tr>
+          <tr><td>Téléphone (oral)</td><td class="val">Simple, rapide</td><td>Pas de preuve en cas de litige</td></tr>
+          <tr><td>Écrit</td><td class="val">Preuve écrite recevable devant les tribunaux (bon de commande, bulletin de commande ou confirmation par courriel)</td><td>Moins rapide</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <p class="res">Confirmer la commande téléphonique par un écrit, par exemple un courriel.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 4 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 4</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">Le litige du beurre de tourage</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Lundi, Sarah commande <strong>par téléphone</strong> 10 plaques de beurre de tourage pour les croissants. Mardi, le livreur dépose 5 plaques. Le fournisseur affirme : « vous avez demandé 5 plaques ». Sarah n'a rien écrit.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Sarah peut-elle prouver qu'elle a commandé 10 plaques ? Justifie.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Quelle conséquence ce manque peut-il avoir sur la production ?</p></div>
+      <div class="question"><span class="q-num">3</span><p>Que devra faire Sarah la prochaine fois ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> relis la dernière phrase du document 1.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span> Non. La commande a été passée à l'oral. En cas de litige, il est difficile de prouver ce qui a été dit au téléphone : la preuve s'établit surtout par un écrit.
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> Il manque du beurre : Sarah ne pourra pas produire tous les croissants prévus (rupture de matière première).
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <p class="res">Confirmer chaque commande téléphonique par écrit (courriel) ou remplir un bon de commande, et en garder un double.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<hr class="section-sep">
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOC 2 – LIRE UN BON DE COMMANDE (séance 2)
+══════════════════════════════════════════════════════════ -->
+<div class="bloc-titre" id="bon-commande" style="margin-top:40px">
+  <span class="icone">📝</span>
+  <h2><small>Séance 2 · 1 h</small>Bloc 2 – Lire un bon de commande</h2>
+</div>
+
+<div class="memo">
+  <div class="memo-titre">🗂 mémo</div>
+  <code>Le bon de commande (BC) est établi par le client. Il envoie l'original au fournisseur et garde un double.</code>
+  <code>7 mentions obligatoires : identification du fournisseur · identification du client · date du BC · numéro du BC · conditions de vente (règlement, livraison, transport) · caractéristiques des produits (désignation, prix unitaire HT, unité de vente, quantité) · signature du client.</code>
+  <code>Franco de port = la livraison n'est pas facturée.</code>
+  <p class="note">Manuel p. 62 à 64 : document 2, exercices 3 à 8.</p>
+</div>
+
+<!-- EX 5 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 5</span>
+    <span class="badge badge-1">⬆ décollage</span>
+    <span class="exo-titre-txt">Pourquoi garder un double ? (exercice 3)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Noah a rempli un bon de commande. Il veut jeter le double : « de toute façon, Centre Primeurs a l'original. » Sarah l'arrête.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Qui établit le bon de commande : le client ou le fournisseur ?</p></div>
+      <div class="question"><span class="q-num">2</span><p>Explique à Noah pourquoi il doit garder le double (manuel p. 62, exercice 3).</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> à quoi servira le double le jour de la livraison ?</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span> <span class="res">Le client.</span>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> Le double permet de vérifier la livraison. Il permet aussi de prouver la date et le contenu de la commande en cas de litige.
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 6 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 6</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Repère les 7 mentions (exercice 4)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Voici le bon de commande n° 2024/10 d'<strong>Au Pain Doré</strong> à <strong>Centre Primeurs</strong> (manuel p. 63).
+    </div>
+    <div class="table-wrap">
+      <table class="tableau-donnees">
+        <tr><th>Réf.</th><th>Désignation</th><th>Unité</th><th>Quantité</th><th>Prix unitaire HT</th></tr>
+        <tr><td>CITJAU01</td><td>Citron jaune cat. 1 Argentine cal 4/40</td><td>kg</td><td class="num">3</td><td class="num">2,65 €</td></tr>
+        <tr><td>ORAJUS0</td><td>Orange à jus cat. 1 Portugal cal 5/6</td><td>kg</td><td class="num">5</td><td class="num">2,20 €</td></tr>
+        <tr><td>POMGOL2</td><td>Pomme golden cat. 1 cal 70/75</td><td>Carton de 5 kg</td><td class="num">2</td><td class="num">8,50 €</td></tr>
+      </table>
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Dans ton manuel p. 63, écris le nom de chaque mention dans les cases grises.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Recopie la date et le numéro de ce bon de commande.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> utilise la liste du mémo. Le client est en haut à gauche.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span>
+        <table class="tableau-corr">
+          <tr><th>Emplacement</th><th>Mention</th></tr>
+          <tr><td>En haut à gauche (Au Pain Doré)</td><td class="val">Identification du client</td></tr>
+          <tr><td>En haut à droite (n° 2024/10)</td><td class="val">Numéro du bon de commande</td></tr>
+          <tr><td>Encadré Centre Primeurs</td><td class="val">Identification du fournisseur</td></tr>
+          <tr><td>10/02/2024</td><td class="val">Date du bon de commande</td></tr>
+          <tr><td>Livraison, transport, règlement, réductions</td><td class="val">Conditions de vente</td></tr>
+          <tr><td>Tableau des produits</td><td class="val">Caractéristiques des produits commandés</td></tr>
+          <tr><td>En bas</td><td class="val">Signature</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> <span class="res">Date : 10/02/2024. Numéro : 2024/10.</span>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 7 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 7</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Lis le bon de commande comme un pro (exercices 5 à 7)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Toujours avec le bon de commande n° 2024/10 (manuel p. 63). Conditions de livraison : <strong>sous 24 heures</strong>.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>À quelle date la commande sera-t-elle livrée ?</p></div>
+      <div class="question"><span class="q-num">2</span><p>Combien de kilos de pommes golden sont commandés ?</p></div>
+      <div class="question"><span class="q-num">3</span><p>À quoi correspond le prix unitaire HT de 2,20 € ?</p></div>
+      <div class="question"><span class="q-num">4</span><p>Sarah veut faire des tartes aux pommes : elle a besoin de 15 kg de pommes. La commande suffit-elle ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> regarde bien la colonne « unité » : un carton n'est pas un kilo.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> <span class="res">Le 11/02/2024 (sous 24 heures).</span></div>
+      <div class="corr-etape"><span class="c-num">2</span> <code>2 cartons × 5 kg = 10 kg de pommes golden</code></div>
+      <div class="corr-etape"><span class="c-num">3</span> C'est le prix d'un kilo (l'unité de vente) d'oranges à jus.</div>
+      <div class="corr-etape">
+        <span class="c-num">4</span> Non : 10 kg commandés, il en faut 15 kg. Il manque 5 kg, soit 1 carton.
+        <p class="conclu">Il faudrait commander 3 cartons.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 8 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 8</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">Franco de port : on paie la livraison ou pas ? (exercice 8)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Sur le bon de commande n° 2024/10, on lit : « transport : 25 € – franco pour toute commande supérieure à 300 € » et « remise 5 % sur l'ensemble de la commande ».
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Explique la phrase « franco pour toute commande supérieure à 300 € ».</p></div>
+      <div class="question"><span class="q-num">2</span><p>Calcule le montant HT de chaque ligne, puis le total HT de la commande.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Calcule la remise de 5 %, puis le montant net HT.</p></div>
+      <div class="question"><span class="q-num">4</span><p>Au Pain Doré paiera-t-il les 25 € de transport ? Justifie.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> montant d'une ligne = quantité × prix unitaire HT. 5 % de 100 € = 5 €.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> Si la commande dépasse 300 €, la livraison est gratuite.</div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <code>Citrons : 3 × 2,65 = 7,95 €</code>
+        <code>Oranges : 5 × 2,20 = 11,00 €</code>
+        <code>Pommes : 2 × 8,50 = 17,00 €</code>
+        <code>Total HT = 7,95 + 11,00 + 17,00 = 35,95 €</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <code>Remise = 35,95 × 5 / 100 = 1,80 € (arrondi)</code>
+        <code>Net HT = 35,95 – 1,80 = 34,15 €</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">4</span> <span class="res">Oui : 34,15 € est inférieur à 300 €, la commande n'est pas franco. Les 25 € de transport s'ajoutent.</span>
+        <p class="conclu">Les frais de transport coûtent presque autant que les fruits : il vaut mieux regrouper ses commandes.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<hr class="section-sep">
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOC 3 – PRÉPARER UNE COMMANDE (séance 3)
+══════════════════════════════════════════════════════════ -->
+<div class="bloc-titre" id="rediger" style="margin-top:40px">
+  <span class="icone">🍓</span>
+  <h2><small>Séance 3 · 1 h</small>Bloc 3 – Préparer une commande de fruits</h2>
+</div>
+
+<div class="memo">
+  <div class="memo-titre">🗂 mémo</div>
+  <code>Avant de remplir le BC : calculer les besoins, puis les convertir dans l'unité de vente du fournisseur (kg, barquette, carton, plateau…).</code>
+  <code>Montant d'une ligne = quantité × prix unitaire HT.</code>
+  <code>Un BC sans numéro, sans date ou sans signature est incomplet.</code>
+  <p class="note">Situation fictive inspirée du manuel. Les prix du catalogue sont des prix d'exercice.</p>
+</div>
+
+<div class="contexte">
+  <strong>Situation commune aux exercices 9 à 12.</strong> Vendredi 12/06/2026, Sarah prépare la production de tartes aux fruits du week-end. Ses besoins : <strong>4 kg de framboises, 6 kg de fraises, 3 kg de citrons jaunes</strong>. Elle commande chez Centre Primeurs (livraison sous 24 heures, transport 25 €, franco au-dessus de 300 €, remise 5 %, paiement sous 8 jours).
+</div>
+<div class="table-wrap">
+  <table class="tableau-donnees">
+    <tr><th>Réf.</th><th>Désignation</th><th>Unité de vente</th><th>Prix unitaire HT</th></tr>
+    <tr><td>FRAMB01</td><td>Framboise cat. 1</td><td>Barquette de 500 g</td><td class="num">6,40 €</td></tr>
+    <tr><td>FRAIS02</td><td>Fraise cat. 1</td><td>Plateau de 1 kg</td><td class="num">7,90 €</td></tr>
+    <tr><td>CITJAU01</td><td>Citron jaune cat. 1</td><td>kg</td><td class="num">2,65 €</td></tr>
+  </table>
+</div>
+
+<!-- EX 9 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 9</span>
+    <span class="badge badge-1">⬆ décollage</span>
+    <span class="exo-titre-txt">Le bon de commande de Noah est-il complet ?</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Noah a préparé un brouillon. On y trouve : le nom et l'adresse d'Au Pain Doré, le nom et l'adresse de Centre Primeurs, les conditions de vente et le tableau des produits.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Compare avec la liste des 7 mentions (document 2, manuel p. 62).</p></div>
+      <div class="question"><span class="q-num">2</span><p>Liste les mentions qui manquent.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> il manque 3 mentions.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <code>La date du bon de commande</code>
+        <code>Le numéro du bon de commande</code>
+        <code>La signature du client</code>
+        <p class="conclu">Sans date ni signature, le BC ne prouve rien en cas de litige.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 10 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 10</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Des kilos aux barquettes</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Le fournisseur ne vend pas tout au kilo. Noah doit traduire les besoins de Sarah dans les unités de vente du catalogue.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Combien de barquettes de framboises faut-il commander ?</p></div>
+      <div class="question"><span class="q-num">2</span><p>Combien de plateaux de fraises ?</p></div>
+      <div class="question"><span class="q-num">3</span><p>Quelle quantité de citrons ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> 1 kg = 1 000 g. Une barquette de 500 g, c'est un demi-kilo.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> <code>4 kg = 4 000 g ; 4 000 ÷ 500 = 8 barquettes</code></div>
+      <div class="corr-etape"><span class="c-num">2</span> <code>6 kg ÷ 1 kg = 6 plateaux</code></div>
+      <div class="corr-etape"><span class="c-num">3</span> <span class="res">3 kg (vendus au kilo).</span></div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 11 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 11</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Remplis le bon de commande</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Sur ton cahier, recopie le modèle du bon de commande du manuel (p. 63) et complète-le pour la commande du 12/06/2026. Numéro : 2026/24.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Remplis l'identification du client et du fournisseur.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Remplis la date, le numéro et les conditions de vente.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Remplis le tableau des produits avec tes résultats de l'exercice 10.</p></div>
+      <div class="question"><span class="q-num">4</span><p>Indique qui doit signer.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> les adresses sont sur le BC du manuel p. 63.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span> Client : Au Pain Doré, 35 bis avenue de la Plaine, 75000 Paris. Fournisseur : Centre Primeurs, MIN – Box 524, 1 rue de la Tour, 92150 Rungis.
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> Date : 12/06/2026. N° 2026/24. Livraison sous 24 heures. Transport 25 €, franco au-dessus de 300 €. Paiement sous 8 jours. Remise 5 %.
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <table class="tableau-corr">
+          <tr><th>Réf.</th><th>Désignation</th><th>Unité</th><th>Qté</th><th>PU HT</th></tr>
+          <tr><td>FRAMB01</td><td>Framboise cat. 1</td><td>Barquette 500 g</td><td class="val">8</td><td>6,40 €</td></tr>
+          <tr><td>FRAIS02</td><td>Fraise cat. 1</td><td>Plateau 1 kg</td><td class="val">6</td><td>7,90 €</td></tr>
+          <tr><td>CITJAU01</td><td>Citron jaune cat. 1</td><td>kg</td><td class="val">3</td><td>2,65 €</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape"><span class="c-num">4</span> <span class="res">Le client : Sarah signe pour Au Pain Doré.</span></div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 12 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 12</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">Combien va coûter la commande ?</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Sarah veut connaître le coût de sa commande n° 2026/24 avant de l'envoyer.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Calcule le montant HT de chaque ligne et le total HT.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Calcule la remise de 5 % et le montant net HT.</p></div>
+      <div class="question"><span class="q-num">3</span><p>La livraison est-elle gratuite ? Calcule le montant HT à payer, transport compris.</p></div>
+      <div class="question"><span class="q-num">4</span><p>À quelle date la commande sera-t-elle livrée ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> même méthode que l'exercice 8.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span>
+        <code>Framboises : 8 × 6,40 = 51,20 €</code>
+        <code>Fraises : 6 × 7,90 = 47,40 €</code>
+        <code>Citrons : 3 × 2,65 = 7,95 €</code>
+        <code>Total HT = 106,55 €</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <code>Remise = 106,55 × 5 / 100 = 5,33 € (arrondi)</code>
+        <code>Net HT = 106,55 – 5,33 = 101,22 €</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span> Non : 101,22 € est inférieur à 300 €.
+        <code>101,22 + 25,00 = 126,22 € HT</code>
+      </div>
+      <div class="corr-etape"><span class="c-num">4</span> <span class="res">Le 13/06/2026 (sous 24 heures).</span></div>
+    </div>
+  </div>
+</details>
+
+<hr class="section-sep">
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOC 4 – CONTRÔLER LA LIVRAISON (séance 4)
+══════════════════════════════════════════════════════════ -->
+<div class="bloc-titre" id="livraison" style="margin-top:40px">
+  <span class="icone">🚚</span>
+  <h2><small>Séance 4 · 1 h</small>Bloc 4 – Le bon de livraison et le contrôle</h2>
+</div>
+
+<div class="memo">
+  <div class="memo-titre">🗂 mémo</div>
+  <code>Le bon de livraison (BL) est émis par le fournisseur. Il prouve que les marchandises ont été livrées et réceptionnées.</code>
+  <code>2 exemplaires : le bon de livraison (gardé par le fournisseur) et le bon de réception (gardé par le client).</code>
+  <code>Mentions : identification du fournisseur · identification du client · numéro du BL · date de livraison · caractéristiques des produits livrés · signature du client.</code>
+  <code>À la réception, vérifier : le bon état des cartons et emballages · la qualité des produits · la quantité. Pour cela, rapprocher (= comparer) le BC et le BL.</code>
+  <code>En cas de problème : écrire des réserves manuscrites sur le BL, puis dater et signer.</code>
+  <p class="note">Manuel p. 64 à 66. Attention : le BL signé déclenche la facturation.</p>
+</div>
+
+<!-- EX 13 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 13</span>
+    <span class="badge badge-1">⬆ décollage</span>
+    <span class="exo-titre-txt">Les mentions du bon de livraison (exercice 9)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Le 11/02/2024, le livreur de Centre Primeurs tend à Noah le bon de livraison n° 6589 (manuel p. 65).
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Qui a établi ce document ?</p></div>
+      <div class="question"><span class="q-num">2</span><p>Dans ton manuel p. 65, écris le nom de chaque mention dans les cases grises.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Quel exemplaire Noah garde-t-il ? Comment s'appelle-t-il ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> sur le BL, le fournisseur est en haut à gauche, à l'inverse du BC.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> <span class="res">Le fournisseur, Centre Primeurs.</span></div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <table class="tableau-corr">
+          <tr><th>Emplacement</th><th>Mention</th></tr>
+          <tr><td>En haut à gauche (Centre Primeurs)</td><td class="val">Identification du fournisseur</td></tr>
+          <tr><td>BL n° 6589, 11/02/2024</td><td class="val">Numéro du BL + date de livraison</td></tr>
+          <tr><td>Encadré Au Pain Doré</td><td class="val">Identification du client</td></tr>
+          <tr><td>Tableau</td><td class="val">Caractéristiques des produits livrés</td></tr>
+          <tr><td>En bas</td><td class="val">Signature</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape"><span class="c-num">3</span> Le client garde le bon de réception.</div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 14 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 14</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Jeu des différences : BC contre BL (exercice 10)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Noah pose côte à côte le bon de commande n° 2024/10 (p. 63) et le bon de livraison n° 6589 (p. 65).
+    </div>
+    <div class="table-wrap">
+      <table class="tableau-donnees">
+        <tr><th>Réf.</th><th>Unité</th><th>Quantité commandée</th><th>Quantité livrée</th></tr>
+        <tr><td>CITJAU01</td><td>kg</td><td class="num">3</td><td class="num">?</td></tr>
+        <tr><td>ORAJUS0</td><td>kg</td><td class="num">5</td><td class="num">?</td></tr>
+        <tr><td>POMGOL2</td><td>Carton de 5 kg</td><td class="num">2</td><td class="num">?</td></tr>
+      </table>
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Recopie le tableau et complète la colonne « quantité livrée ».</p></div>
+      <div class="question"><span class="q-num">2</span><p>Que constates-tu ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> compare ligne par ligne, avec la même référence.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> Livré : citrons 3 kg, oranges 5 kg, pommes 1 carton.</div>
+      <div class="corr-etape"><span class="c-num">2</span> <span class="res">Il manque 1 carton de 5 kg de pommes golden (POMGOL2).</span></div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 15 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 15</span>
+    <span class="badge badge-2">◆ intermédiaire</span>
+    <span class="exo-titre-txt">Écris tes réserves (exercice 11)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Le livreur est pressé : « signez là, ça ira ! ». Noah se rappelle qu'il doit d'abord noter le problème.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Sur le BL du manuel p. 65, complète les réserves, la date et la signature.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Que se passe-t-il si Noah signe sans écrire de réserves ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> une réserve est précise : quoi, combien, quelle référence.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape">
+        <span class="c-num">1</span>
+        <code>Réserves : manque 1 carton de 5 kg de pommes golden (POMGOL2).</code>
+        <code>Date : 11/02/2024 · Signature : Au Pain Doré</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> Le BL signé déclenche la facturation. Sans réserve, Au Pain Doré risque de payer 2 cartons alors qu'il n'en a reçu qu'un.
+        <p class="conclu">On vérifie toujours avant de signer, même si le livreur est pressé.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 16 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 16</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">La livraison des fruits rouges</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Samedi 13/06/2026, Centre Primeurs livre la commande n° 2026/24 (exercices 9 à 12) avec le BL n° 7012. Noah contrôle et note :<br>
+      – framboises : <strong>6 barquettes</strong> livrées ;<br>
+      – fraises : 6 plateaux livrés, dont <strong>1 plateau avec des fruits moisis</strong> ;<br>
+      – citrons : 3 kg livrés, en bon état ;<br>
+      – un carton est <strong>écrasé</strong>, mais son contenu (citrons) est intact.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Quels sont les 3 points à contrôler à la réception ?</p></div>
+      <div class="question"><span class="q-num">2</span><p>Relève les anomalies en comparant avec le BC n° 2026/24.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Rédige les réserves à écrire sur le BL.</p></div>
+      <div class="question"><span class="q-num">4</span><p>Qui Noah doit-il prévenir ? Pourquoi ?</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> une anomalie peut porter sur la quantité, la qualité ou l'emballage.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> Le bon état des cartons et emballages, la qualité des produits, la quantité des produits.</div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <table class="tableau-corr">
+          <tr><th>Produit</th><th>Anomalie</th><th>Type</th></tr>
+          <tr><td>Framboises</td><td class="val">Manque 2 barquettes (8 commandées, 6 livrées)</td><td>Quantité</td></tr>
+          <tr><td>Fraises</td><td class="val">1 plateau de fruits moisis</td><td>Qualité</td></tr>
+          <tr><td>Carton</td><td class="val">Carton écrasé, contenu intact</td><td>Emballage</td></tr>
+        </table>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <code>Manque 2 barquettes de 500 g de framboises (FRAMB01).</code>
+        <code>1 plateau de 1 kg de fraises (FRAIS02) avec fruits moisis.</code>
+        <code>1 carton écrasé à la livraison, contenu intact.</code>
+        <code>Date : 13/06/2026 · Signature</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">4</span> <span class="res">Sarah, sa responsable.</span> Le contrôle se fait sous l'autorité d'un responsable et toute anomalie doit lui être signalée. Il manque 1 kg de framboises et 1 kg de fraises : la production de tartes est menacée.
+        <p class="conclu">Le plateau moisi ne doit pas entrer dans le laboratoire : risque pour l'hygiène et pour les autres fruits.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<hr class="section-sep">
+
+<!-- ══════════════════════════════════════════════════════════
+     BLOC 5 – SUJETS TYPE EXAMEN (séance 5)
+══════════════════════════════════════════════════════════ -->
+<div class="bloc-titre" id="examen" style="margin-top:40px">
+  <span class="icone">🏆</span>
+  <h2><small>Séance 5 · 1 h</small>Bloc 5 – Sujets type examen</h2>
+</div>
+
+<div class="memo">
+  <div class="memo-titre">🗂 mémo</div>
+  <code>La chaîne complète : besoins → bon de commande (client) → livraison → bon de livraison (fournisseur) → contrôle et réserves → facture.</code>
+  <code>BC : établi par le client. BL : émis par le fournisseur, signé par le client.</code>
+  <p class="note">Ces sujets préparent l'épreuve EP1 (pôle 1, partie écrite de 30 minutes, compétence C1.1 « contrôler la livraison »).</p>
+</div>
+
+<!-- EX 17 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 17</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">Sujet complet : les galettes des rois (30 min)</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Janvier, chez <strong>Au Pain Doré</strong>. Pour les galettes des rois, Sarah a calculé ses besoins : <strong>5 kg de poudre d'amandes, 10 kg de beurre de tourage, 5 kg de sucre semoule</strong>. Elle commande le lundi 04/01/2027 chez le fournisseur <strong>Moulins et Sucres</strong> (bon de commande n° 2027/01). Conditions : livraison sous 48 heures, transport 30 €, franco au-dessus de 150 €.
+    </div>
+    <div class="table-wrap">
+      <table class="tableau-donnees">
+        <tr><th>Réf.</th><th>Désignation</th><th>Unité de vente</th><th>Prix unitaire HT</th></tr>
+        <tr><td>AMD01</td><td>Poudre d'amandes</td><td>Sac de 1 kg</td><td class="num">14,50 €</td></tr>
+        <tr><td>BTR02</td><td>Beurre de tourage</td><td>Plaque de 2 kg</td><td class="num">18,90 €</td></tr>
+        <tr><td>SUC05</td><td>Sucre semoule</td><td>Sac de 5 kg</td><td class="num">6,20 €</td></tr>
+      </table>
+    </div>
+    <div class="contexte">
+      <strong>À la livraison</strong> (BL n° 4410) : 5 sacs de poudre d'amandes, <strong>4 plaques</strong> de beurre de tourage, 1 sac de sucre <strong>percé</strong>.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>La commande est un contrat. Cite une obligation du client et une obligation du fournisseur.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Calcule la quantité à commander pour chaque produit, dans l'unité de vente.</p></div>
+      <div class="question"><span class="q-num">3</span><p>Calcule le total HT. Le transport est-il facturé ?</p></div>
+      <div class="question"><span class="q-num">4</span><p>À quelle date la livraison est-elle prévue ?</p></div>
+      <div class="question"><span class="q-num">5</span><p>Qui établit le BL ? Cite 4 mentions obligatoires du BL.</p></div>
+      <div class="question"><span class="q-num">6</span><p>Compare BC et BL, puis rédige les réserves.</p></div>
+      <div class="question"><span class="q-num">7</span><p>Explique pourquoi Sarah ne doit pas signer le BL sans le vérifier.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> fais les questions dans l'ordre, elles suivent la chaîne de la commande à la livraison.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> Client : régler la somme convenue. Fournisseur : livrer les produits commandés, respecter les délais, respecter les règles d'hygiène et de sécurité.</div>
+      <div class="corr-etape">
+        <span class="c-num">2</span>
+        <code>Amandes : 5 kg ÷ 1 kg = 5 sacs</code>
+        <code>Beurre : 10 kg ÷ 2 kg = 5 plaques</code>
+        <code>Sucre : 5 kg ÷ 5 kg = 1 sac</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">3</span>
+        <code>5 × 14,50 = 72,50 € · 5 × 18,90 = 94,50 € · 1 × 6,20 = 6,20 €</code>
+        <code>Total HT = 173,20 €</code>
+        Non : 173,20 € est supérieur à 150 €, la commande est franco de port.
+      </div>
+      <div class="corr-etape"><span class="c-num">4</span> <span class="res">Le mercredi 06/01/2027 (sous 48 heures).</span></div>
+      <div class="corr-etape"><span class="c-num">5</span> Le fournisseur (Moulins et Sucres). Mentions : identification du fournisseur, identification du client, numéro du BL, date de livraison, caractéristiques des produits livrés, signature du client.</div>
+      <div class="corr-etape">
+        <span class="c-num">6</span>
+        <code>Manque 1 plaque de 2 kg de beurre de tourage (BTR02).</code>
+        <code>1 sac de 5 kg de sucre semoule (SUC05) percé à la livraison.</code>
+        <code>Date : 06/01/2027 · Signature</code>
+      </div>
+      <div class="corr-etape">
+        <span class="c-num">7</span> Le BL signé déclenche la facturation. Sans réserves, Au Pain Doré paiera des produits manquants ou abîmés et ne pourra plus prouver le problème.
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- EX 18 -->
+<details class="exo-card">
+  <summary class="exo-header">
+    <span class="exo-num">Ex. 18</span>
+    <span class="badge badge-exam">★ examen</span>
+    <span class="exo-titre-txt">Remets la chaîne dans l'ordre et explique-la au jury</span>
+    <span class="chevron">▼</span>
+  </summary>
+  <div class="exo-body">
+    <div class="contexte">
+      Lors de l'oral, le jury demande à Noah : « expliquez-moi comment vous recevez une livraison ». Voici les étapes, dans le désordre :<br>
+      A. Signer et dater le BL.<br>
+      B. Calculer les besoins de la production.<br>
+      C. Écrire les réserves sur le BL.<br>
+      D. Remplir et envoyer le BC, garder un double.<br>
+      E. Rapprocher le BC et le BL, contrôler cartons, qualité, quantité.<br>
+      F. Recevoir la facture.
+    </div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><p>Remets les étapes dans l'ordre.</p></div>
+      <div class="question"><span class="q-num">2</span><p>Explique la chaîne au jury en 3 phrases, avec les mots : client, fournisseur, bon de commande, bon de livraison, réserves.</p></div>
+    </div>
+    <div class="ordre-grandeur"><strong>Coup de pouce :</strong> la facture arrive en dernier, car c'est le BL signé qui la déclenche.</div>
+    <button class="btn-corrige" onclick="toggleCorr(this)">✅ Voir la correction</button>
+    <div class="correction">
+      <div class="corr-etape"><span class="c-num">1</span> <code>B → D → E → C → A → F</code></div>
+      <div class="corr-etape">
+        <span class="c-num">2</span> Exemple : « en tant que client, nous envoyons un bon de commande au fournisseur et nous gardons un double. À la livraison, je compare le bon de commande et le bon de livraison, et je contrôle les cartons, la qualité et la quantité. S'il y a un problème, j'écris des réserves précises sur le bon de livraison avant de le dater et de le signer. »
+        <p class="conclu">Une réponse claire, avec le vocabulaire professionnel, montre au jury que tu maîtrises la compétence C1.1.</p>
+      </div>
+    </div>
+  </div>
+</details>
+
+</main>
+
+<footer class="site-footer">
+  CAP pâtissier – Gestion appliquée &nbsp;|&nbsp; Chapitre 9 : de la commande à la livraison &nbsp;|&nbsp; 18 exercices progressifs
+</footer>
+
+<script>
+function toggleCorr(btn) {
+  const corr = btn.nextElementSibling;
+  const isVisible = corr.classList.contains('visible');
+  corr.classList.toggle('visible', !isVisible);
+  btn.textContent = isVisible ? '✅ Voir la correction' : '🔒 Masquer la correction';
+}
+</script>
+</body>
+</html>
